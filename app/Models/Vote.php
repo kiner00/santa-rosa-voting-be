@@ -9,4 +9,6 @@ class Vote extends Model
 {
     /** @use HasFactory<\Database\Factories\VoteFactory> */
     use HasFactory;
+
+    protected $fillable = ['candidate_id', 'user_id'];
 }

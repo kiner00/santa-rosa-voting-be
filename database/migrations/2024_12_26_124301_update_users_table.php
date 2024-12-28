@@ -15,6 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('barangay_id');
             $table->foreign('barangay_id')->references('id')->on('barangays')->onDelete('cascade');
             $table->boolean('is_admin')->default(false);
+            $table->boolean('has_voted')->default(false);
         });
     }
 

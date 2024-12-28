@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email',
         'password',
         'barangay_id',
+        'has_voted',
     ];
 
     /**
@@ -46,6 +47,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'has_voted' => 'boolean',
         ];
     }
 }

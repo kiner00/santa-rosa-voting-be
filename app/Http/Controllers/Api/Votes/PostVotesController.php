@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Votes;
 use App\Http\Controllers\Controller;
 use App\Models\Candidate;
 use App\Models\Position;
+use App\Models\User;
 use App\Models\Vote;
 use Illuminate\Http\Request;
 
@@ -25,12 +26,13 @@ class PostVotesController extends Controller
                 'max:' . $position->maximum_candidates, // Limit the number of candidates
                 function ($attribute, $value, $fail) use ($position) {
                     if (!empty($value)) {
-                        $invalidCandidates = Candidate::whereNotIn('id', $value)
+                        // Check if all candidate IDs belong to the specified position
+                        $validCandidateCount = Candidate::whereIn('id', $value)
                             ->where('position_id', $position->id)
-                            ->exists();
+                            ->count();
 
-                        if ($invalidCandidates) {
-                            $fail('Invalid candidates for ' . $attribute);
+                        if ($validCandidateCount !== count($value)) {
+                            $fail("One or more candidates in {$attribute} are invalid for position ID {$position->id}.");
                         }
                     }
                 },
@@ -43,7 +45,7 @@ class PostVotesController extends Controller
         // Process votes
         foreach ($validated['votes'] as $positionId => $candidateIds) {
             foreach ($candidateIds as $candidateId) {
-                // Logic to record the vote
+                // Record the vote
                 Vote::create([
                     'position_id' => $positionId,
                     'candidate_id' => $candidateId,
@@ -52,7 +54,8 @@ class PostVotesController extends Controller
             }
         }
 
+        User::where('id', auth()->id())->update(['has_voted' => true]);
+
         return response()->json(['message' => 'Vote successfully recorded!'], 200);
     }
-
 }
