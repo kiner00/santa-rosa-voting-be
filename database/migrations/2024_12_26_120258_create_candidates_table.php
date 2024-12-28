@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('alias');
             $table->string('photo')->nullable();
+            $table->text('bio')->nullable();
+            $table->text('propaganda')->nullable();
             $table->unsignedBigInteger('position_id');
             $table->foreign('position_id')->references('id')->on('positions')->onDelete('cascade');
             $table->timestamps();

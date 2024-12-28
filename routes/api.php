@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\LogoutController;
 use App\Http\Controllers\Api\Auth\RegistrationController;
+use App\Http\Controllers\Api\Barangays\GetBarangaysController;
 use App\Http\Controllers\Api\Candidates\AddCandidatesController;
 use App\Http\Controllers\Api\Candidates\DeleteCandidatesController;
 use App\Http\Controllers\Api\Candidates\GetCandidatesController;
@@ -20,6 +21,7 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/register', [RegistrationController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
+Route::get('/barangays', [GetBarangaysController::class, 'getBarangays']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [LogoutController::class, 'logout']);
