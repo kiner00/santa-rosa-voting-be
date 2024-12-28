@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('barangay_id');
             $table->foreign('barangay_id')->references('id')->on('barangays')->onDelete('cascade');
-            $table->unsignedBigInteger('type');
+            $table->boolean('is_admin')->default(false);
         });
     }
 

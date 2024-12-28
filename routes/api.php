@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\Candidates\GetCandidatesController;
 use App\Http\Controllers\Api\Candidates\UpdateCandidatesController;
 use App\Http\Controllers\Api\Votes\GetVotesController;
 use App\Http\Controllers\Api\Votes\PostVotesController;
+use App\Http\Middleware\IsAdminMiddleware;
+use GuzzleHttp\Promise\Is;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,8 +27,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('vote/vote', [PostVotesController::class, 'vote']);
     Route::get('vote/vote', [GetVotesController::class, 'getVote']);
 
-    Route::get('admin/candidates', [GetCandidatesController::class, 'getCandidates']);
-    Route::post('admin/candidates', [AddCandidatesController::class, 'addCandidates']);
-    Route::put('admin/candidates/{candidate}', [UpdateCandidatesController::class, 'updateCandidate']);
-    Route::delete('admin/candidates/{candidate}', [DeleteCandidatesController::class, 'deleteCandidate']);
+    Route::group([], function () {
+        Route::get('admin/candidates', [GetCandidatesController::class, 'getCandidates']);
+        Route::post('admin/candidates', [AddCandidatesController::class, 'addCandidates']);
+        Route::put('admin/candidates/{candidate}', [UpdateCandidatesController::class, 'updateCandidate']);
+        Route::delete('admin/candidates/{candidate}', [DeleteCandidatesController::class, 'deleteCandidate']);
+    })->middleware(IsAdminMiddleware::class);
 });
