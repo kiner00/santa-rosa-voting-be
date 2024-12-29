@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Candidates\AddCandidatesController;
 use App\Http\Controllers\Api\Candidates\DeleteCandidatesController;
 use App\Http\Controllers\Api\Candidates\GetCandidatesController;
 use App\Http\Controllers\Api\Candidates\UpdateCandidatesController;
+use App\Http\Controllers\Api\Votes\DeleteVotesController;
 use App\Http\Controllers\Api\Votes\GetVotesController;
 use App\Http\Controllers\Api\Votes\PostVotesController;
 use App\Http\Middleware\HasVotedMiddleware;
@@ -28,6 +29,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('vote', [PostVotesController::class, 'vote'])->middleware(HasVotedMiddleware::class);
     Route::get('vote', [GetVotesController::class, 'getVote']);
+    Route::delete('vote', [DeleteVotesController::class, 'deleteVote']);
 
     Route::group([], function () {
         Route::get('admin/candidates', [GetCandidatesController::class, 'getCandidates']);
